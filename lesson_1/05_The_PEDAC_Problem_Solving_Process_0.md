@@ -10,7 +10,7 @@ Output: An integer representing the sum of all the integers in that particular r
 Explicit Requirements:
 - There is a sequence of integers
 - Sequence begins with 2
-- Integers are even consecutive numbers
+- Integers are consecutive even numbers
 - Sequence is separated and grouped into rows
 - Rows get incrementally larger by one integer
   * The next row always has one more integer than the previous row
@@ -53,13 +53,13 @@ A nested array seems a reasonable choice to represent the sequence of rows.
 ## A: Algorithms
 1. Create an empty array `rows` to hold all of the rows
 2. Create a `row` array and add it to the overall `rows` array
-  - Extracted as a sub-problem: Create a Row
+   - (Extracted as a sub-problem: Create a Row)
 3. Repeat step 2 until all the necessary rows have been created
-  - All the rows have been created when the length of `rows` is equal to the input integer
+   - All the rows have been created when the size of `rows` is equal to the input integer
 4. Sum the final row
 5. Return the sum
 
-### Sub-Problem: Create a Row
+## Sub-Problem: Create a Row
 Rules:
 - Row is an array
 - Array contains integers
@@ -70,13 +70,14 @@ Rules:
 Input: 
 - Length of the row
 - The starting integer
+
 Output: The row itself (i.e., `[8, 10, 12]` for the third row)
 
 Examples:
-Length: 1 Starting number: 2  -> [2]
-Length: 2 Starting number: 4  -> [4, 6]
-Length: 3 Starting number: 8  -> [8, 10, 12]
-Length: 4 Starting number: 14 -> [14, 16, 18, 20]
+(Length: 1 Starting number: 2)  -> [2]
+(Length: 2 Starting number: 4)  -> [4, 6]
+(Length: 3 Starting number: 8)  -> [8, 10, 12]
+(Length: 4 Starting number: 14) -> [14, 16, 18, 20]
 
 Data Structure:
 Array
