@@ -2,6 +2,12 @@
   puts arr.first
 end
 
+# Output:
+# 1
+# 3
+
+# => [[1, 2], [3, 4]]
+
 =begin
 The iterative method `each` is called on the two-layer nested array
 `[[1, 2], [3, 4]]` with a block and `arr` as the block parameter.
