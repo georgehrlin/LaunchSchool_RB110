@@ -1,92 +1,112 @@
-=begin
-Given two words, how many letters do you have to remove from them to make them
-  anagrams?
+todo_lists = [
+  {
+    id: 1,
+    list_name: 'Groceries',
+    todos: [
+      { id: 1, name: 'Bread', completed: false },
+      { id: 2, name: 'Milk', completed: false },
+      { id: 3, name: 'Apple Juice', completed: false }
+    ]
+  },
+  {
+    id: 2,
+    list_name: 'Homework',
+    todos: [
+      { id: 1, name: 'Math', completed: false },
+      { id: 2, name: 'English', completed: false }
+    ]
+  }
+]
 
-anagram_difference('', '') == 0
-anagram_difference('a', '') == 1
-anagram_difference('', 'a') == 1
-anagram_difference('ab', 'a') == 1
-anagram_difference('ab', 'ba') == 0 
-anagram_difference('ab', 'cd') == 4
-anagram_difference('aab', 'a') == 2 
-anagram_difference('a', 'aab') == 2 
-anagram_difference('codewars', 'hackerrank') == 10 
-anagram_difference("oudvfdjvpnzuoratzfawyjvgtuymwzccpppeluaekdlvfkhclwau", "trvhyfkdbdqbxmwpbvffiodwkhwjdjlynauunhxxafscwttqkkqw") == 42
-anagram_difference("fcvgqognzlzxhmtjoahpajlplfqtatuhckxpskhxiruzjirvpimrrqluhhfkkjnjeuvxzmxo", "qcfhjjhkghnmanwcthnhqsuigwzashweevbegwsbetjuyfoarckmofrfcepkcafznykmrynt") == 50
-=end
+# todo_lists[1][:todos][0][:completed] = true
+# todo_lists[1][:todos][1][:completed] = true
 
-=begin
-PEDAC
+a = 'hi'
+english_greetings = ['hello', a, 'good morning']
 
-Input: Two strings
-Output: An integer that indicates how many letters need to be removed from the
-        two argument strings in total for the two strings to become anagrams of
-        each other
+greetings = {
+  french: ['bonjour', 'salut', 'allo'],
+  english: english_greetings,
+  italian: ['buongiorno', 'buonasera', 'ciao']
+}
 
-Rules:
-- Anagrams are words that contain the same letters but in indifferent orders
-- An empty string is considered an anagram of an empty string
+greetings[:english][1] = 'hey'
 
-Algorithm:
-- Split first string into an array
-- Split second string into an array
-- Compare the lengths of the arrays
-  - Assign the shorter array to a variable, `short`
-  - Assign the longer array to a variable, `long`
-- Create a counter that tracks the number of letters to be removed
-- Loop over `long` array
-  - Determine if both `short` and `long` contain the letter being iterated
-    - If yes
-      - Select out the sub-array from `short` that consists of the letter
-      - Select out the sub-array from `long` that consists of the letter
-      - Subtract the length of `long` sub-array from `short` sub-array and add
-        it to the counter
-    - If no
-      - Select out the sub-array from `long` that consists of the letter
-      - Determine the length of the sub-array and add it to the counter
-- Return counter
-=end
-
-def anagram_difference(str1, str2)
-  arr1 = str1.chars
-  arr2 = str2.chars
-  counter = 0
-
-  if arr1.length > arr2.length
-    long = arr1
-    short = arr2
-  else
-    long = arr2
-    short = arr1
-  end
-
-  p "Shorter is #{short}"
-  p "Longer is #{long}"
-
-  long.each do |char|
-    if long.include?(char) && short.include?(char)
-      short_sub = short.select { |letter| letter == char }
-      p short_sub
-      long_sub = long.select { |letter| letter == char }
-      p long_sub
-      counter += (long_sub.length - short_sub.length)
-    else
-      long_sub = long.select { |letter| letter == char }
-      counter += long_sub.length
-    end
-  end
-
-  counter
+greetings.each do |language, greeting_list|
+  greeting_list.each { |greeting| greeting.upcase! }
 end
 
-#p anagram_difference('', '') == 0
-#p anagram_difference('a', '') == 1
-#p anagram_difference('', 'a') == 1
-#p anagram_difference('ab', 'a') == 1
-#p anagram_difference('ab', 'ba') == 0 
-#p anagram_difference('ab', 'cd') == 4
-p anagram_difference('aab', 'a') == 2 
-#p anagram_difference('a', 'aab') == 2 
-#p anagram_difference('codewars', 'hackerrank') == 10 
-#p anagram_difference("oudvfdjvpnzuoratzfawyjvgtuymwzccpppeluaekdlvfkhclwau", "trvhyfkdbdqbxmwpbvffiodwkhwjdjlynauunhxxafscwttqkkqw") == 42
-#p anagram_difference("fcvgqognzlzxhmtjoahpajlplfqtatuhckxpskhxiruzjirvpimrrqluhhfkkjnjeuvxzmxo", "qcfhjjhkghnmanwcthnhqsuigwzashweevbegwsbetjuyfoarckmofrfcepkcafznykmrynt") == 50
+puts a
+puts english_greetings[1]
+puts greetings[:english][1]
+
+order_data = [
+  {customer_id: 12, customer_name: 'Emma Lopez', order_id: 351, order_date: '12/04/16', order_fulfilled: true, order_value: 135.99},
+  {customer_id: 12, customer_name: 'Emma Lopez', order_id: 383, order_date: '12/04/16', order_fulfilled: true, order_value: 289.49},
+  {customer_id: 12, customer_name: 'Emma Lopez', order_id: 392, order_date: '01/10/17', order_fulfilled: false, order_value: 58.00},
+  {customer_id: 32, customer_name: 'Michael Richards', order_id: 241, order_date: '11/10/16', order_fulfilled: true, order_value: 120.00},
+  {customer_id: 32, customer_name: 'Michael Richards', order_id: 395, order_date: '01/10/17', order_fulfilled: false, order_value: 85.65},
+  # rest of data...
+]
+
+# Option 3
+# customer_orders
+{ 12 => { :customer_id => 12
+          :customer_name => 'Emma Lopez'
+          :orders => [
+            { :order_fulfilled => true, :order_value => 135.99 },
+            { :order_fulfilled => true, :order_value => 289.49 }
+          ]
+        }
+      }
+
+
+# Option 1
+# customer_orders
+{ 12 => { :customer_id => 12,
+          :customer_name => 'Emma Lopez',
+          :orders => [
+            [true, 135.99],
+            [true, 289.49]
+          ]
+        }
+      }
+
+# Option 2
+# temp_orders, first iteration
+{ 12 => { :customer_name => 'Emma Lopez',
+  :customer_id => 12,
+  :orders => [
+    {
+      :order_fulfilled => true,
+      :order_value => 135.99
+    }
+  ]
+  }
+}
+
+# temp_orders, second iteration
+{ 12 => }
+
+
+# Target Outcome 
+customer_orders = [
+  {
+    customer_id: 12,
+    customer_name: 'Emma Lopez',
+    orders: [
+      { order_fulfilled: true, order_value: 135.99 },
+      { order_fulfilled: true, order_value: 289.49 },
+      { order_fulfilled: false, order_value: 58.00 }
+    ]
+  },
+  {
+    customer_id: 32,
+    customer_name: 'Michael Richards',
+    orders: [
+      { order_fulfilled: true, order_value: 120.00 },
+      { order_fulfilled: false, order_value: 85.65 }
+    ]
+  },
+  # rest of data...
+]
