@@ -1,5 +1,4 @@
-require 'pry-byebug'
-
+ROUNDS_TO_GRAND_WIN = 5
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
@@ -12,11 +11,38 @@ def prompt(msg)
   puts "=> #{msg}"
 end
 
+def player_goes_first?
+  loop do
+    prompt "Who goes first? Enter '1' for player' or '2' for computer."
+    prompt "Or enter '3' to let computer choose. Press Enter after choosing."
+    choice = gets.chomp.to_i
+    case choice
+    when 1
+      return true
+    when 2
+      return false
+    when 3
+      return [true, false].sample
+    else
+      prompt "Invalid choice! Please enter '1', '2', or '3'."
+    end
+  end
+end
+
+def display_first(first)
+  if first
+    prompt 'You are first!'
+  else
+    prompt 'Computer is first!'
+  end
+end
+
+# rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/AbcSize
 def display_board(brd, player_score, computer_score)
   system 'clear'
-  puts "Player score: #{player_score} | "+ 
-        "Computer score: #{computer_score} \n"
+  puts "Player score: #{player_score} | " \
+       "Computer score: #{computer_score} \n"
   puts "You're a #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
   puts ""
   puts "     |     |"
@@ -32,6 +58,7 @@ def display_board(brd, player_score, computer_score)
   puts "     |     |"
   puts ""
 end
+# rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/AbcSize
 
 def initialize_board
@@ -54,6 +81,24 @@ def joinor(arr, separater = ', ', separater_final = 'or')
   end
 end
 
+def locate_winning_square(brd, marker)
+  WINNING_LINES.each do |line|
+    if (brd.values_at(*line).count(marker) == 2) &&
+       (brd.values_at(*line).count(INITIAL_MARKER) == 1)
+      line.each { |square| return square if brd[square] == ' ' }
+    end
+  end
+  nil
+end
+
+def place_piece!(brd, current_player)
+  if current_player == 'player'
+    player_places_piece!(brd)
+  elsif current_player == 'computer'
+    computer_places_piece!(brd)
+  end
+end
+
 def player_places_piece!(brd)
   square = ''
   loop do
@@ -66,17 +111,31 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
-def immediate_threat?(brd) # 2 sqaures in a row marked by player
-  
-end
-
-def computer_defends!(brd)
-  
-end
-
 def computer_places_piece!(brd)
+  if locate_winning_square(brd, COMPUTER_MARKER) # Computer offense
+    square = locate_winning_square(brd, COMPUTER_MARKER)
+  elsif locate_winning_square(brd, PLAYER_MARKER) # Computer defense
+    square = locate_winning_square(brd, PLAYER_MARKER)
+  elsif brd[5] == INITIAL_MARKER
+    square = 5
+  else
+    square = empty_squares(brd).sample
+  end
+
+  brd[square] = COMPUTER_MARKER
+end
+
+def computer_starts!(brd)
   square = empty_squares(brd).sample
   brd[square] = COMPUTER_MARKER
+end
+
+def alternate_player(current_player)
+  if current_player == 'player'
+    'computer'
+  elsif current_player == 'computer'
+    'player'
+  end
 end
 
 def board_full?(brd)
@@ -98,21 +157,37 @@ def detect_winner(brd)
   nil
 end
 
-loop do # main loop
-    player_score = 0
-    computer_score = 0
-    board = nil
+loop do # main game loop
+  player_score = 0
+  computer_score = 0
+  board = nil
 
-  loop do # 5 wins to be grand winner
+  prompt 'Welcome to Tic Tac Toe!'
+  sleep(1.5)
+  player_first = player_goes_first?
+  display_first(player_first)
+  prompt 'Game is about to start. Get ready!'
+  sleep(2)
+
+  loop do
     board = initialize_board
+
+    if player_first
+      current_player = 'player'
+    else
+      computer_first = true
+      current_player = 'computer'
+    end
 
     loop do
       display_board(board, player_score, computer_score)
-
-      player_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
-
-      computer_places_piece!(board)
+      if computer_first # So that when computer starts it doesn't always take 5
+        computer_starts!(board)
+        computer_first = false
+      else
+        place_piece!(board, current_player)
+      end
+      current_player = alternate_player(current_player)
       break if someone_won?(board) || board_full?(board)
     end
 
@@ -122,28 +197,37 @@ loop do # main loop
       prompt "#{detect_winner(board)} won!"
       player_score += 1 if detect_winner(board) == 'Player'
       computer_score += 1 if detect_winner(board) == 'Computer'
-      prompt 'We have a grand winner...' if player_score == 5 || computer_score == 5
-      sleep(1)
-      prompt 'Press Enter key to continue.'
-      gets.chomp
-      #binding.pry
+      if player_score == ROUNDS_TO_GRAND_WIN ||
+         computer_score == ROUNDS_TO_GRAND_WIN
+        prompt 'We have a grand winner...'
+      end
     else
       prompt "It's a tie!"
-      sleep(1)
-      prompt 'Press Enter key to continue.'
-      gets.chomp
     end
 
-    break if player_score == 5 || computer_score == 5
+    sleep(1)
+    prompt 'Press Enter key to continue.'
+    gets.chomp
+
+    break if player_score == ROUNDS_TO_GRAND_WIN ||
+             computer_score == ROUNDS_TO_GRAND_WIN
   end
 
   system('clear')
-  prompt((detect_winner(board) == 'Player') ? 'YOU ARE THE GRAND WINNER!' : 'Computer is the grand winner!')
+
+  if detect_winner(baord) == 'Player'
+    prompt 'YOU ARE THE GRAND WINNER!'
+  else
+    prompt 'Computer is the grand winner.'
+  end
+
   sleep(1)
-  puts "୧(๑•̀ヮ•́)૭ LET'S GO!" if detect_winner(board) == 'Player'
-  sleep(2)
-  prompt 'Play again? (y or no)'
+  puts "୧(๑•̀ヮ•́)૭ LET'S GO!!!" if detect_winner(board) == 'Player'
+
+  sleep(0.5)
+  prompt "Play again? Enter 'y' or 'n' (then press Enter)."
   answer = gets.chomp
+  system('clear')
   break unless answer.downcase.start_with?('y')
 end
 
