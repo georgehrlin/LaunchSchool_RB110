@@ -1,4 +1,4 @@
-ROUNDS_TO_GRAND_WIN = 3
+ROUNDS_TO_GRAND_WIN = 5
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
@@ -169,7 +169,7 @@ def announce_round_winner(brd)
   end
 end
 
-def tally_socres_at_end_of_round(brd, player_score, computer_score)
+def tally_scores_at_end_of_round(brd, player_score, computer_score)
   if detect_winner(brd) == 'Player'
     [player_score + 1, computer_score]
   elsif detect_winner(brd) == 'Computer'
@@ -183,8 +183,8 @@ def grand_winner?(player_score, computer_score)
   player_score == ROUNDS_TO_GRAND_WIN || computer_score == ROUNDS_TO_GRAND_WIN
 end
 
-def announce_grand_winner(brd)
-  if detect_winner(brd) == 'Player'
+def announce_grand_winner(player_score)
+  if player_score == ROUNDS_TO_GRAND_WIN
     prompt 'YOU ARE THE GRAND WINNER!'
     sleep(1)
     puts "୧(๑•̀ヮ•́)૭ LET'S GO!!!"
@@ -215,7 +215,7 @@ loop do # main game loop
 
     announce_round_winner(board)
 
-    player_score, computer_score = tally_socres_at_end_of_round(board,
+    player_score, computer_score = tally_scores_at_end_of_round(board,
                                                                 player_score,
                                                                 computer_score)
 
