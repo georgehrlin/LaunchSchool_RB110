@@ -1,0 +1,35 @@
+- 52 cards in total in the deck
+  - Four suits of ace, 2 to 10, jack, queen, king
+  - Jack, queen, and king each is worth 10
+  - Ace is worth 1 or 11
+- Win/loss condition
+  - Having a total > 21 when drawing means bust (immediate loss)
+  - Player/dealer who has the higher total at the end of the round
+- Value of ace
+  - The value of an ace (or multiple aces at hand) is determined each time a new card is drawn
+  - With an ace in hand, if the total is <= 21 with the inclusion of the newly drawn card, then the ace is worth 11
+  - If the total is > 21 instead if the ace was worth 11, the ace is worth 1 instead
+  - Example: [2, 3, ace1, ace2]
+    - Assuming ace2 is the new card drawn
+    - ace1 is worth 11 and ace2 is worth 1 
+    - Because if both ace1 and ace2 were worth 11, the total > 21
+    - Therefore either ace1 or ace2 must be worth 1 and the other 11
+- Setup
+  - Player versus dealer
+  - Both are dealt 2 cards initially
+  - Player can see both of his own cards, but only one of dealer's cards
+- Player's turn
+  - Hit/stay
+  - Hit
+    - Player draws a card
+    - Busts (player loses) if the total > 21
+    - Player can continue to hit for as many times as he wants
+      - Until player stays or busts
+  - Stay
+    - Deal's turn then begins
+- Dealer's turn
+  - Dealer has to hit until his total is >= 17
+  - Once total >= 17, dealer can stay
+  - If dealer busts, player wins
+- Once both player and dealer stay
+  - Totals are compared. Higher total wins
