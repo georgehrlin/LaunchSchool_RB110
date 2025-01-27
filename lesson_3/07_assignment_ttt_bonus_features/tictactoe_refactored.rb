@@ -124,11 +124,6 @@ def computer_places_piece!(brd)
   brd[square] = COMPUTER_MARKER
 end
 
-def computer_starts!(brd)
-  square = empty_squares(brd).sample
-  brd[square] = COMPUTER_MARKER
-end
-
 def alternate_player(current_player)
   current_player == 'player' ? 'computer' : 'player'
 end
@@ -230,7 +225,7 @@ loop do # main game loop
   end
 
   system('clear')
-  announce_grand_winner(board)
+  announce_grand_winner(player_score)
   sleep(1.5)
 
   prompt "Play again? Enter 'y' or 'n' (then press Enter)."
