@@ -1,4 +1,4 @@
-- 52 cards in total in the deck
+- 52 cards total in the deck
   - Four suits of ace, 2 to 10, jack, queen, king
   - Jack, queen, and king each is worth 10
   - Ace is worth 1 or 11
