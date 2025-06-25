@@ -1,8 +1,8 @@
 welcome: 'Welcome to Twenty-One!'
 rounds_to_win: 'Win %s rounds to be the grand winner!'
-display_player_cards: 'Here are your cards: %s'
+display_player_cards: 'Your cards are: %s.'
 display_player_total: 'Your total is: %s'
-display_dealer_one_card: "Here is a dealer's card: %s"
+display_dealer_one_card: "Here is dealer's revealed card: %s. Another card is hidden."
 hit_or_stay: 'Would you like to (h)it or (s)tay?'
 invalid_choice: 'Invalid choice. Please enter h or s.'
 display_dealer_cards: "Dealer's cards: %s"
